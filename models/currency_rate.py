@@ -9,7 +9,7 @@ class ResCurrencyRate(models.Model):
         res = super(ResCurrencyRate, self).create(vals)
         currency_id = res.currency_id
         product_tmpl_ids = self.env['product.template'].search([('currency_id','=',currency_id.id)])
-        for product_tmpl in product_tmpl_ids:
+        for product_tmpl in product_tmpl_ids.filtered(lambda p: p.currency_id.id == currency_id.id):
             if product_tmpl.seller_ids:
                 currency = product_tmpl.seller_ids[0].currency_id
                 price = product_tmpl.seller_ids[0].price
